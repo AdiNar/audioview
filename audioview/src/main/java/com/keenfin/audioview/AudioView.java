@@ -48,8 +48,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
     protected boolean mIsAttached = false;
     protected long mProgressDelay;
 
-    protected FloatingActionButton mPlay;
-    protected ImageButton mRewind, mForward;
+    protected ImageButton mRewind, mForward, mPlay;
     protected TextView mTitle, mTime, mTotalTime;
     protected SeekBar mProgress;
     protected Handler mHandler;
@@ -86,8 +85,11 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
             mMinified = styleable.getBoolean(R.styleable.AudioView_minified, false);
             mCustomLayoutRes = styleable.getResourceId(R.styleable.AudioView_customLayout, 0);
 
-            if (styleable.hasValue(R.styleable.AudioView_minified) && mCustomLayoutRes != 0) {
-                throw new RuntimeException("Minified attr should not be specified while using custom layout.");
+            if ((styleable.hasValue(R.styleable.AudioView_minified)
+                    || styleable.hasValue(R.styleable.AudioView_primaryColor))
+                    && mCustomLayoutRes != 0) {
+                throw new RuntimeException("Minified and primaryColor attr should not be specified " +
+                        "while using custom layout.");
             }
 
             if (styleable.hasValue(R.styleable.AudioView_primaryColor))
@@ -130,8 +132,12 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 mProgress.getThumb().setColorFilter(mPrimaryColor, PorterDuff.Mode.SRC_ATOP);
             }
-            mPlay.setBackgroundTintList(ColorStateList.valueOf(mPrimaryColor));
-            mPlay.setRippleColor(darkenColor(mPrimaryColor, 0.87f));
+
+            // At this point mPlay will always be FloatingActionButton
+            // (attrs customLayout and primaryColor are mutually exclusive).
+            FloatingActionButton mPlayFloating = (FloatingActionButton) mPlay;
+            mPlayFloating.setBackgroundTintList(ColorStateList.valueOf(mPrimaryColor));
+            mPlayFloating.setRippleColor(darkenColor(mPrimaryColor, 0.87f));
         }
 
         mTracks = new ArrayList<>();
