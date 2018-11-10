@@ -58,6 +58,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
     protected boolean mSelectControls = true;
     protected boolean mMinified = false;
     protected int mPrimaryColor = 0;
+    protected int mCustomLayoutRes = 0;
 
     public AudioView(Context context) {
         super(context);
@@ -83,12 +84,24 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
             mShowTitle = styleable.getBoolean(R.styleable.AudioView_showTitle, true);
             mSelectControls = styleable.getBoolean(R.styleable.AudioView_selectControls, true);
             mMinified = styleable.getBoolean(R.styleable.AudioView_minified, false);
+            mCustomLayoutRes = styleable.getResourceId(R.styleable.AudioView_customLayout, 0);
+
+            if (styleable.hasValue(R.styleable.AudioView_minified) && mCustomLayoutRes != 0) {
+                throw new RuntimeException("Minified attr should not be specified while using custom layout.");
+            }
+
             if (styleable.hasValue(R.styleable.AudioView_primaryColor))
                 mPrimaryColor = styleable.getColor(R.styleable.AudioView_primaryColor, 0xFF000000);
             styleable.recycle();
         }
 
-        int layout = mMinified ? R.layout.audioview_min : R.layout.audioview;
+        int layout;
+
+        if (mCustomLayoutRes != 0) {
+            layout = mCustomLayoutRes;
+        } else {
+            layout = mMinified ? R.layout.audioview_min : R.layout.audioview;
+        }
         View view = inflate(getContext(), layout, null);
         addView(view);
 
