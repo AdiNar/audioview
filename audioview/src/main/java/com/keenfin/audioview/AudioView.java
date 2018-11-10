@@ -228,8 +228,6 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                if (!mIsAttached)
-                    return;
                 mIsPrepared = true;
                 if (mShowTitle) {
                     try {
