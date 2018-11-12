@@ -46,6 +46,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
     protected int mCurrentTrack = 0;
     protected boolean mIsPrepared = false;
     protected boolean mIsAttached = false;
+    protected boolean mPlayWantedBeforePrepared = false;
     protected long mProgressDelay;
 
     protected ImageButton mRewind, mForward, mPlay;
@@ -261,6 +262,11 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
 
                 if (mTotalTime != null)
                     mTotalTime.setText(totalTime);
+
+                if (mPlayWantedBeforePrepared) {
+                    mPlayWantedBeforePrepared = false;
+                    start();
+                }
             }
         });
 
@@ -390,6 +396,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
     protected void reset() {
         mIsPrepared = false;
         mMediaPlayer.reset();
+        mPlayWantedBeforePrepared = false;
     }
 
     protected void prepare(Object source) throws IOException {
@@ -402,6 +409,8 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
             mMediaPlayer.start();
             setPauseIcon();
             mHandler.sendEmptyMessage(SEEKBAR_STATE.STICK.ordinal());
+        } else {
+            mPlayWantedBeforePrepared = true;
         }
     }
 
@@ -411,6 +420,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
 
         setPlayIcon();
         mHandler.sendEmptyMessage(SEEKBAR_STATE.UNSTICK.ordinal());
+        mPlayWantedBeforePrepared = false;
     }
 
     public void stop() {
@@ -419,6 +429,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
 
         setPlayIcon();
         mHandler.sendEmptyMessage(SEEKBAR_STATE.UNSTICK.ordinal());
+        mPlayWantedBeforePrepared = false;
     }
 
     protected void setPauseIcon() {
