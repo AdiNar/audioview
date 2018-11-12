@@ -59,6 +59,8 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
     protected int mPrimaryColor = 0;
     protected int mCustomLayoutRes = 0;
 
+    protected SeekBar.OnSeekBarChangeListener additionalOnSeekBarChangeListener;
+    
     public AudioView(Context context) {
         super(context);
         init(null, null);
@@ -184,6 +186,10 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
                     mTime.setText(formatTime(mMediaPlayer.getCurrentPosition()));
                 else
                     mTime.setText(getTrackTime());
+
+                if (additionalOnSeekBarChangeListener != null) {
+                    additionalOnSeekBarChangeListener.onProgressChanged(seekBar, progress, fromUser);
+                }
             }
 
             @Override
@@ -469,5 +475,9 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
         result += String.format("%02d:%02d", min, millis);
 
         return result;
+    }
+
+    public void setAdditionalOnSeekBarChangeListener(SeekBar.OnSeekBarChangeListener additionalOnSeekBarChangeListener) {
+        this.additionalOnSeekBarChangeListener = additionalOnSeekBarChangeListener;
     }
 }
