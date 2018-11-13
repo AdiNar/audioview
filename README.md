@@ -54,6 +54,12 @@ Specify custom player layout. Should contain
 
 Mutually exclusive with minified and primaryColor.
 
+#### customPlayIcon
+Set resource of play icon.
+
+#### customPauseIcon
+Set resource of pause icon.
+
 #### selectControls
 Show (true by default) or hide rewind/forward buttons. Not available if minified.
 
@@ -65,8 +71,10 @@ Show song's title if there is one. Default is true.
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:minified="true"
-    app:customLayout="@layout/my_custom_layout"
     app:primaryColor="@android:color/holo_blue_ligh"
     app:selectControls="false"
-    app:showTitle="false"/>
+    app:showTitle="false"
+    app:customLayout="@layout/my_custom_layout"
+    app:customPlayIcon="@drawable/my_play_icon"
+    app:customPauseIcon="@drawable/my_pause_icon"/>
 ```

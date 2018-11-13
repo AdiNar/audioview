@@ -59,6 +59,8 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
     protected boolean mMinified = false;
     protected int mPrimaryColor = 0;
     protected int mCustomLayoutRes = 0;
+    protected int mCustomPlayIconRes = 0;
+    protected int mCustomPauseIconRes = 0;
 
     protected SeekBar.OnSeekBarChangeListener additionalOnSeekBarChangeListener;
     
@@ -87,6 +89,10 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
             mSelectControls = styleable.getBoolean(R.styleable.AudioView_selectControls, true);
             mMinified = styleable.getBoolean(R.styleable.AudioView_minified, false);
             mCustomLayoutRes = styleable.getResourceId(R.styleable.AudioView_customLayout, 0);
+            mCustomPlayIconRes = styleable.getResourceId(R.styleable.AudioView_customPlayIcon,
+                    R.drawable.ic_play_arrow_white_24dp);
+            mCustomPauseIconRes = styleable.getResourceId(R.styleable.AudioView_customPauseIcon,
+                    R.drawable.ic_pause_white_24dp);
 
             if ((styleable.hasValue(R.styleable.AudioView_minified)
                     || styleable.hasValue(R.styleable.AudioView_primaryColor))
@@ -433,11 +439,11 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
     }
 
     protected void setPauseIcon() {
-        mPlay.setImageResource(R.drawable.ic_pause_white_24dp);
+        mPlay.setImageResource(mCustomPauseIconRes);
     }
 
     protected void setPlayIcon() {
-        mPlay.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+        mPlay.setImageResource(mCustomPlayIconRes);
     }
 
     protected String getTrackTitle() {
