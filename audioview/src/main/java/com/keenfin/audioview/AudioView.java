@@ -466,6 +466,10 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
         return artist;
     }
 
+    public boolean isPlaying() {
+        return mMediaPlayer.isPlaying();
+    }
+
     protected String getTrackTime() {
         return formatTime(mMediaPlayer.getCurrentPosition()) + " / " + formatTime(mMediaPlayer.getDuration());
     }
