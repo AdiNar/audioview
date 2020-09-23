@@ -35,6 +35,7 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AudioView extends FrameLayout implements View.OnClickListener {
     enum SEEKBAR_STATE {STICK, UNSTICK}
@@ -397,6 +398,14 @@ public class AudioView extends FrameLayout implements View.OnClickListener {
         reset();
         mMediaPlayer.setDataSource(fd);
         prepare(fd);
+    }
+
+    public void setDataSource(Context ctx, Uri uri, Map<String, String> headers) throws IOException {
+        reset();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            mMediaPlayer.setDataSource(ctx, uri, headers);
+        }
+        prepare(uri);
     }
 
     protected void reset() {
